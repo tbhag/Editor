@@ -1,9 +1,28 @@
 import { Chrome } from "../components/Chrome";
+import { FAKE, pfo } from "../components/data";
+
+const cmap = {
+  chrome: Chrome
+};
 
 export default function Index() {
+  const components = FAKE.components;
+  const populate = o => {
+    const { type, content, id, version, children } = o;
+    const Component = cmap[type.toLowerCase()];
+    return (
+      <Component
+        content={content}
+        id={id}
+        version={version}
+        data={pfo(children, components)}
+      />
+    );
+  };
+  const Dom = populate(FAKE.components[1]);
   return (
     <div>
-      <Chrome />
+      {Dom}
       <style jsx global>{`
         /* http://meyerweb.com/eric/tools/css/reset/ */
         html {

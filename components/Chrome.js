@@ -1,29 +1,38 @@
 import cx from "classnames";
 import { useState, useContext, createContext } from "react";
+import { FAKE, pfo } from "./data";
 import {
-  ThemeA,
-  ThemeASettings,
-  ThemeASettingsContextWrap
-} from "./Themes/ThemeA/Theme";
+  ThemeB,
+  ThemeBSettings,
+  ThemeBSettingsContextWrap
+} from "./Themes/ThemeB/Theme";
+
+const cmap = {
+  themeb: ThemeB,
+  themebsettings: ThemeBSettings,
+  themebsettingscontextwrap: ThemeBSettingsContextWrap
+};
 
 export const ChromeContext = createContext();
 
 export const ChoiceList = props => {
   const { data, setVersion, version } = props;
   const keys = Object.keys(data);
-  const list = keys.map(key => (
-    <li key={key}>
-      <label>
-        <input
-          type="radio"
-          name="choices"
-          defaultChecked={key === version}
-          onClick={() => setVersion(key)}
-        />
-        {data[key].text}
-      </label>
-    </li>
-  ));
+  const list = keys.map(key => {
+    return (
+      <li key={key + version}>
+        <label>
+          <input
+            type="radio"
+            name="choices"
+            defaultChecked={Number(key) === version}
+            onClick={() => setVersion(key)}
+          />
+          {data[key].text}
+        </label>
+      </li>
+    );
+  });
   return <ul>{list}</ul>;
 };
 
@@ -132,11 +141,14 @@ export const Chrome = props => {
   const [dark, setDark] = useState(props.dark);
   const [downView, setDownView] = useState(props.downView);
   const { aside, setAside, setLastA } = useContext(ChromeContext);
+  const A = cmap[props.data.SettingsContextWrap.name.toLowerCase()];
+  const B = cmap[props.data.Settings.name.toLowerCase()];
+  const C = cmap[props.data.Theme.name.toLowerCase()];
   return (
     <>
       <header className="chrome-header">
         <select>
-          <option value="v1">Theme A</option>
+          <option value="v1">Theme B</option>
         </select>
         <label>
           <input
@@ -183,14 +195,18 @@ export const Chrome = props => {
         <strong className="logo">☆TBHAG's Editor</strong>
       </header>
       <div className={cx("chrome-wrap", { "chrome-hide": hide })}>
-        <ThemeASettingsContextWrap>
+        <A>
           <section className="chrome-aside">
-            {aside || <ThemeASettings dark={dark} mobile={mobile} />}
+            {aside || <B dark={dark} mobile={mobile} />}
           </section>
           <ChromeContent mobile={mobile} downView={downView}>
-            <ThemeA mobile={mobile} dark={dark} />
+            <C
+              mobile={mobile}
+              dark={dark}
+              data={pfo(props.data.Theme.children, FAKE.components)}
+            />
           </ChromeContent>
-        </ThemeASettingsContextWrap>
+        </A>
       </div>
       <style jsx global>{`
         .chrome-aside h3,
