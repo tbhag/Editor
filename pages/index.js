@@ -7,22 +7,17 @@ const cmap = {
 
 export default function Index() {
   const components = FAKE.components;
-  const populate = o => {
-    const { type, content, id, version, children } = o;
-    const Component = cmap[type.toLowerCase()];
-    return (
+  const first = components[1];
+  const { type, content, id, version, children } = first;
+  const Component = cmap[type.toLowerCase()];
+  return (
+    <div>
       <Component
         content={content}
         id={id}
         version={version}
         data={pfo(children, components)}
       />
-    );
-  };
-  const Dom = populate(FAKE.components[1]);
-  return (
-    <div>
-      {Dom}
       <style jsx global>{`
         /* http://meyerweb.com/eric/tools/css/reset/ */
         html {

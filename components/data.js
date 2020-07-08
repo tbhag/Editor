@@ -70,7 +70,7 @@ export const FAKE = {
       name: null,
       type: "DesktopLayout",
       content: {},
-      version: 2,
+      version: 1,
       contexts: {},
       parent: 4,
       children: { Sidebar: 21, Main: 23 }
@@ -110,7 +110,7 @@ export const FAKE = {
       name: null,
       type: "Accordion",
       content: { heading_text: "Heading 1", text: "text 1" },
-      version: 2,
+      version: 1,
       parent: 24,
       persist: false,
       children: null
@@ -130,7 +130,7 @@ export const FAKE = {
       name: null,
       type: "Accordion",
       content: { heading_text: "Heading 3", text: "text 3" },
-      version: 2,
+      version: 1,
       parent: 24,
       persist: false,
       children: null
