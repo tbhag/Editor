@@ -163,6 +163,7 @@ export const AccordionContextWrap = props => {
             version={child.version}
             id={child.id}
             key={index}
+            open={true}
             persist={child.persist}
             content={child.content}
           />
