@@ -63,7 +63,7 @@ export const FAKE = {
       version: 1,
       contexts: {},
       parent: 1,
-      children: { DesktopLayout: 18 }
+      children: { DesktopLayout: 18, MobileLayout: 28 }
     },
     "18": {
       id: 18,
@@ -132,6 +132,76 @@ export const FAKE = {
       content: { heading_text: "Heading 3", text: "text 3" },
       version: 1,
       parent: 24,
+      persist: false,
+      children: null
+    },
+    "28": {
+      id: 28,
+      name: null,
+      type: "MobileLayout",
+      content: {},
+      version: 2,
+      contexts: {},
+      parent: 4,
+      children: { Sidebar: 29, Main: 30 }
+    },
+    "29": {
+      id: 29,
+      name: null,
+      type: "Sidebar",
+      content: {},
+      version: 1,
+      parent: 28,
+      children: { AccordionContextWrap: 31 }
+    },
+    "30": {
+      id: 30,
+      name: null,
+      type: "Main",
+      content: {
+        text:
+          "You have power over your mind – not outside events. Realize this, and you will find strength. ~ Marcus Aurelius"
+      },
+      version: 1,
+      parent: 28,
+      children: null
+    },
+    "31": {
+      id: 31,
+      name: null,
+      type: "AccordionContextWrap",
+      content: null,
+      version: 1,
+      parent: 29,
+      children: [32, 33, 34]
+    },
+    "32": {
+      id: 32,
+      name: null,
+      type: "Accordion",
+      content: { heading_text: "Heading 1", text: "text 1" },
+      version: 2,
+      parent: 31,
+      persist: false,
+      children: null
+    },
+    "33": {
+      id: 33,
+      name: null,
+      type: "Accordion",
+      content: { heading_text: "Heading 2", text: "text 2" },
+      version: 2,
+      parent: 31,
+      persist: false,
+      children: null
+    },
+    "34": {
+      id: 34,
+      name: null,
+      type: "Accordion",
+      content: { heading_text: "Heading 3", text: "text 3" },
+      version: 2,
+      parent: 31,
       persist: false,
       children: null
     }

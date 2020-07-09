@@ -1,9 +1,11 @@
 import { useState, useContext, createContext } from "react";
 import { DesktopLayout } from "./Desktop/Layout";
+import { MobileLayout } from "./Mobile/Layout";
 import { FAKE, pfo } from "../../data";
 
 const cmap = {
-  desktoplayout: DesktopLayout
+  desktoplayout: DesktopLayout,
+  mobilelayout: MobileLayout
 };
 
 export const SettingsContext = createContext();
@@ -213,13 +215,20 @@ export const ThemeB = props => {
 
   const mode = props.dark ? contextDarkOptions : contextLightOptions;
   const { mobile, data } = props;
+  console.log(data);
   const A = cmap[data.DesktopLayout.type.toLowerCase()];
+  const B = cmap[data.MobileLayout.type.toLowerCase()];
   return (
     <>
       <A
         mobile={mobile}
         version={data.DesktopLayout.version}
         data={pfo(data.DesktopLayout.children, FAKE.components)}
+      />
+      <B
+        mobile={mobile}
+        version={data.MobileLayout.version}
+        data={pfo(data.MobileLayout.children, FAKE.components)}
       />
       <style jsx global>{`
         :root {

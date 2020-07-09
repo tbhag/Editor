@@ -5,9 +5,11 @@ import { ChromeContext, ChoiceListPersist } from "../../../Chrome";
 export const AccordionContext = createContext();
 
 export const accordionVersions = {
-  v1: {
+  1: {
+    text: "accordion 1",
     dom: props => {
       const [open, setOpen] = useState(props.open);
+      const { heading_text, text } = props.content;
       return (
         <section className={props.className} onClick={props.onClick}>
           <button
@@ -16,13 +18,13 @@ export const accordionVersions = {
               setOpen(!open);
             }}
           >
-            Heading
+            {heading_text}
           </button>
           {open && (
             <ul>
-              <li className="list">Thing</li>
-              <li className="list">Thing</li>
-              <li className="list">Thing</li>
+              <li className="list">{text}</li>
+              <li className="list">{text}</li>
+              <li className="list">{text}</li>
             </ul>
           )}
           <style jsx>{`
@@ -49,12 +51,13 @@ export const accordionVersions = {
           `}</style>
         </section>
       );
-    },
-    text: "accordion 1"
+    }
   },
-  v2: {
+  2: {
+    text: "accordion 2",
     dom: props => {
       const [open, setOpen] = useState(props.open);
+      const { heading_text, text } = props.content;
       return (
         <section className={props.className} onClick={props.onClick}>
           <p
@@ -63,13 +66,13 @@ export const accordionVersions = {
               setOpen(!open);
             }}
           >
-            Heading
+            {heading_text}
           </p>
           {open && (
             <ul>
-              <li className="list">Thing</li>
-              <li className="list">Thing</li>
-              <li className="list">Thing</li>
+              <li className="list">{text}</li>
+              <li className="list">{text}</li>
+              <li className="list">{text}</li>
             </ul>
           )}
           <style jsx>{`
@@ -80,8 +83,8 @@ export const accordionVersions = {
               width: 100%;
               padding: var(--padding-2);
               border-bottom: 1px solid var(--inner-color);
-              font-size: var(--small-size);
-              color: var(--inner-color);
+              background-color: var(--bg-inner-color);
+              font-size: var(--large-size);
             }
             .list {
               font-family: var(--font);
@@ -91,32 +94,16 @@ export const accordionVersions = {
             }
             .list:last-child {
               border-bottom: none;
-              color: var(--inner-color);
             }
           `}</style>
         </section>
       );
-    },
-    text: "accordion 2"
+    }
   }
 };
 
-export const AccordionContextWrap = props => {
-  const [contextVersion, setContextVersion] = useState(props.version);
-  return (
-    <AccordionContext.Provider
-      value={{
-        setContextVersion,
-        contextVersion
-      }}
-    >
-      {props.children}
-    </AccordionContext.Provider>
-  );
-};
-
 export const Accordion = props => {
-  const { open } = props;
+  const { open, id, content } = props;
   const [version, setVersion] = useState(props.version);
   const [persist, setPersist] = useState(props.persist);
   const [a, setA] = useState(false);
@@ -128,6 +115,8 @@ export const Accordion = props => {
   return (
     <Component
       className={cx("e", { a: a })}
+      id={id}
+      content={content}
       open={open}
       onClick={e => {
         e.stopPropagation();
@@ -137,6 +126,7 @@ export const Accordion = props => {
           <>
             <h3>Accordion Options</h3>
             <ChoiceListPersist
+              key={id}
               setVersion={setVersion}
               setContextVersion={setContextVersion}
               setPersist={setPersist}
@@ -150,5 +140,34 @@ export const Accordion = props => {
         setLastA(setA);
       }}
     />
+  );
+};
+
+const cmap = {
+  accordion: Accordion
+};
+
+export const AccordionContextWrap = props => {
+  const [contextVersion, setContextVersion] = useState(props.version);
+  return (
+    <AccordionContext.Provider
+      value={{
+        setContextVersion,
+        contextVersion
+      }}
+    >
+      {props.data.map((child, index) => {
+        const A = cmap[child.type.toLowerCase()];
+        return (
+          <A
+            version={child.version}
+            id={child.id}
+            key={index}
+            persist={child.persist}
+            content={child.content}
+          />
+        );
+      })}
+    </AccordionContext.Provider>
   );
 };
