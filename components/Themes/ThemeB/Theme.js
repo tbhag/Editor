@@ -1,6 +1,12 @@
 import { useState, useContext, createContext } from "react";
 import { DesktopLayout } from "./Desktop/Layout";
 import { MobileLayout } from "./Mobile/Layout";
+import { FAKE, pfo } from "../../data";
+
+const cmap = {
+  desktoplayout: DesktopLayout,
+  mobilelayout: MobileLayout
+};
 
 export const SettingsContext = createContext();
 
@@ -87,7 +93,7 @@ export const SettingsAside = props => {
   );
 };
 
-export const ThemeASettingsContextWrap = props => {
+export const ThemeBSettingsContextWrap = props => {
   const [contextLightOptions, setContextLightOptions] = useState(
     defaultLightOptions
   );
@@ -123,7 +129,7 @@ export const ThemeASettingsContextWrap = props => {
   );
 };
 
-export const ThemeASettings = props => {
+export const ThemeBSettings = props => {
   const {
     contextLightOptions,
     setContextLightOptions,
@@ -198,7 +204,7 @@ export const ThemeASettings = props => {
   );
 };
 
-export const ThemeA = props => {
+export const ThemeB = props => {
   const {
     contextLightOptions,
     contextDarkOptions,
@@ -208,11 +214,22 @@ export const ThemeA = props => {
   } = useContext(SettingsContext);
 
   const mode = props.dark ? contextDarkOptions : contextLightOptions;
-  const { mobile } = props;
+  const { mobile, data } = props;
+  console.log(data);
+  const A = cmap[data.DesktopLayout.type.toLowerCase()];
+  const B = cmap[data.MobileLayout.type.toLowerCase()];
   return (
     <>
-      <DesktopLayout mobile={mobile} version="v1" />
-      <MobileLayout mobile={mobile} version="v1" />
+      <A
+        mobile={mobile}
+        version={data.DesktopLayout.version}
+        data={pfo(data.DesktopLayout.children, FAKE.components)}
+      />
+      <B
+        mobile={mobile}
+        version={data.MobileLayout.version}
+        data={pfo(data.MobileLayout.children, FAKE.components)}
+      />
       <style jsx global>{`
         :root {
           --inner-bg-color: ${mode.innerBGColor};
